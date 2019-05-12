@@ -28,25 +28,28 @@ export default class App extends Component {
   }
 
   _getWeather = (lat, long) => {
-    fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&APPID=${API_KEY}`)
+    fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${API_KEY}&units=metric`)
     .then(response => response.json())
     .then(json => {
       console.log(json);
       this.setState({
-        temperature: json.main.tmep,
-        name:json.weather[0].main,
+        temperature: json.main.temp,
+        name: json.weather[0].main,
         isLoaded: true
       })
     });
   };
 
   render() {
-    const { isLoaded, error } = this.state;
+    const { isLoaded, error, temperature, name } = this.state;    
     return (
       <View style={styles.container}>
         <StatusBar hidden={true} />
         {isLoaded ? (
-          <Weather />
+          <Weather 
+            weatherName={name} 
+            temp={temperature}
+          />
         ) : (
             <View style={styles.loading}>
               <Text style={styles.loadingText}>날씨정보를 불러오고 있습니다.</Text>
