@@ -4,24 +4,38 @@ import Weather from './Weather'
 
 export default class App extends Component {
   state = {
-    isLoaded: true
+    isLoaded: false
+  };
+
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        this.setState({
+          isLoaded: true
+        });
+      },
+      error => {
+        console.log(err);
+      }
+    );
   }
+
   render() {
     const { isLoaded } = this.state;
     return (
       <View style={styles.container}>
         <StatusBar hidden={true} />
         {isLoaded ? (
-          <Weather/>
+          <Weather />
         ) : (
-        <View style={styles.loading}>
-          <Text style={styles.loadingText}>날씨정보를 불러오고 있습니다.</Text>
-        </View>
-        )}
+            <View style={styles.loading}>
+              <Text style={styles.loadingText}>날씨정보를 불러오고 있습니다.</Text>
+            </View>
+          )}
       </View>
     );
   }
-} 
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -36,6 +50,6 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 38,
-    marginBottom: 100
+    marginBottom: 24
   }
 });
